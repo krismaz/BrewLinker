@@ -1,6 +1,6 @@
 #include <OneWire.h>
 #include <DallasTemperature.h>
-
+#include "SSR.h"
 
 #define ONE_WIRE_BUS A0
 
@@ -22,6 +22,10 @@ void setupSensors(void)
     addresses[i] = (uint8_t*)malloc(sizeof(DeviceAddress));
     sensors.getAddress(addresses[i], i);
   }
+  for(uint8_t j = 0; j < nAddresses; j++)
+  {
+    target[j] = 0x00;
+  }
 
 }
 
@@ -33,6 +37,7 @@ void setup(void)
   // Start up the library
   sensors.begin();
   setupSensors();
+  SSRInit();
 }
 
 union{
@@ -42,9 +47,10 @@ union{
 
 void setTemperature()
 {
+  while(Serial.available()<4) delay(50);  
   for(int8_t i = 0; i < 4; ++i)
   {
-    while((FloatBytes.asBytes[i] = Serial.read()) == -1);
+    FloatBytes.asBytes[i] = Serial.read();
   }
   temperature = FloatBytes.asFloat;
   Serial.println(temperature);
@@ -52,11 +58,12 @@ void setTemperature()
 
 void setTarget()
 {
+  while(Serial.available()<8) delay(50);  
   for(int8_t i = 0; i < 8; ++i)
   {
-    while((target[i] = Serial.read()) == -1);
+    target[i] = Serial.read();
   }
-  for(uint8_t j = 0; j<8; j++)
+  for(uint8_t j = 0; j<8; ++j)
   {
     Serial.print("0x");
     Serial.print(target[j], HEX);
@@ -83,6 +90,16 @@ void printTemps()
   Serial.flush();
 }
 
+void cycle()
+{
+  if(sensors.validAddress(target) && sensors.getTempC(target)<temperature)
+  {
+    SSROn();
+  } else {
+    SSROff(); 
+  }
+} 
+
 
 void loop(void)
 { 
@@ -101,4 +118,5 @@ void loop(void)
        delay(500);
        break;
   }
+  cycle();
 }
