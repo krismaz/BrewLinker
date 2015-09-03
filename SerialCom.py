@@ -1,10 +1,12 @@
 import serial
 import io
-from time import sleep
+from time import sleep, time
 from struct import pack
 import binascii
 
 sio = None
+
+lasttarget = ''
 
 def getTemperatures():
 	ser.write(bytes([1]))
@@ -20,13 +22,15 @@ def setTemperature(temp):
 	ser.write(bytes([2]))
 	ser.write(bts)
 	ser.flush()
-	print(sio.readline())
+	print('Target set:', sio.readline())
 
 def setTarget(target):
+	global lasttarget
+	lasttarget = target
 	ser.write(bytes([3]))
 	ser.write(bytes(map(lambda x: int(x,16), target.split(" "))))
 	ser.flush()
-	print(sio.readline())
+	print('Temp set:', sio.readline())
 
 def setupSerial(port = 'COM9'):
 	global sio, ser
@@ -40,11 +44,38 @@ def setupSerial(port = 'COM9'):
 	sleep(10)
 
 
-setupSerial()
+def evaluate(command, index):
+	if command[0] == '#':
+		return
+	op, *args = command.split(' ')
+	if op == 'TARGET':
+		setTarget(' '.join(args))
+	if op == 'HEAT':
+		setTemperature(float(args[0]))
+		while True:
+			temps = getTemperatures()
+			print(index, '-', temps)
+			if temps[lasttarget] >= float(args[0]):
+				break
+			sleep(5)
+	if op == 'COOK':
+		start = time()
+		setTemperature(float(args[0]))
+		while True:
+			temps = getTemperatures()
+			print(index, '-', temps)
+			if time() > start + float(args[1])*60.0:
+				break
+			sleep(5)
+	if op == 'DONE':
+		setTemperature(-100.0)
+		setTarget('0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0')
 
-setTemperature(32.5)
-setTarget('0x28 0xFF 0x20 0x23 0x4B 0x4 0x0 0x83')
+i = 1
 
-while True:
-	print(getTemperatures())
-	sleep(1)	
+if __name__ == "__main__":
+	setupSerial()
+	
+	while(True):
+		evaluate(input().strip(), i)
+		i += 1
