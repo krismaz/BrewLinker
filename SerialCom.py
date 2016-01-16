@@ -33,18 +33,22 @@ def setTarget(target):
 	ser.flush()
 	print('Temp set:', sio.readline())
 
-def setupSerial(port = 'COM9'):
+def setupSerial(port):
 	print('a')
 	global sio, ser
-	ser = serial.Serial(
-	    port='/dev/ttyACM1',
-	    baudrate=9600,
-	    timeout = 3
-	)
+	try:
+		ser = serial.Serial(
+	    	port=port,
+	    	baudrate=9600,
+	    	timeout = 3
+		)
+	except serial.serialutil.SerialException:
+		print('Error communicating with device "{}"! Have you provided the correct COM port?'.format(port))
+		exit(1)
 	print('a')
 	
 	sio = io.TextIOWrapper(io.BufferedRWPair(ser, ser, buffer_size  = 1), encoding = 'ascii', newline = None)
-	sio._CHUNK_SIZE = 1 #Why the fuck! Just emit a sting as sson as it is done! I understand the need to buffer, but really, why not emit stuff on newlines???
+	sio._CHUNK_SIZE = 1 #Why the fuck! Just emit a string as soon as it is done! I understand the need to buffer, but really, why not emit stuff on newlines???
 	
 	print('a')
 	sleep(10)
@@ -65,8 +69,14 @@ def evaluate(command, index):
 		while True:
 			temps = getTemperatures()
 			print(index, '-', temps)
-			if temps[lasttarget] >= float(args[0]):
-				break
+			try:
+				if temps[lasttarget] >= float(args[0]):
+					break
+			except KeyError:
+				print('Unknown target sensor {}!'.format(lasttarget))
+				print('Connected sensors are:')
+				print('\n'.join(*temps.keys()))
+				exit(1)
 			sleep(5)
 	if op == 'COOK':
 		start = time()
@@ -86,7 +96,7 @@ def evaluate(command, index):
 i = 1
 
 if __name__ == "__main__":
-	setupSerial()
+	setupSerial('/dev/ttyACM1')
 	
 	while(True):
 		evaluate(input().strip(), i)
