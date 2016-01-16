@@ -3,6 +3,7 @@ import io
 from time import sleep, time
 from struct import pack
 import binascii
+from pymsgbox import *
 
 sio = None
 
@@ -33,18 +34,27 @@ def setTarget(target):
 	print('Temp set:', sio.readline())
 
 def setupSerial(port = 'COM9'):
+	print('a')
 	global sio, ser
 	ser = serial.Serial(
-	    port='COM9',
+	    port='/dev/ttyACM1',
 	    baudrate=9600,
 	    timeout = 3
 	)
+	print('a')
+	
 	sio = io.TextIOWrapper(io.BufferedRWPair(ser, ser, buffer_size  = 1), encoding = 'ascii', newline = None)
 	sio._CHUNK_SIZE = 1 #Why the fuck! Just emit a sting as sson as it is done! I understand the need to buffer, but really, why not emit stuff on newlines???
+	
+	print('a')
 	sleep(10)
+	print('a')
 
 
 def evaluate(command, index):
+	if not command:
+		return
+	print(command, '----')
 	if command[0] == '#':
 		return
 	op, *args = command.split(' ')
@@ -67,8 +77,10 @@ def evaluate(command, index):
 			if time() > start + float(args[1])*60.0:
 				break
 			sleep(5)
+	if op == 'PAUSE':
+		alert(text=' '.join(args), title='', button='OK')
 	if op == 'DONE':
-		setTemperature(-100.0)
+		setTemperature(-100000000.0)
 		setTarget('0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0')
 
 i = 1

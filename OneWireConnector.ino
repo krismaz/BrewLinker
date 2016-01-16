@@ -11,7 +11,7 @@ DallasTemperature sensors(&oneWire);
 uint8_t ** addresses;
 uint8_t nAddresses;
 DeviceAddress target;
-float temperature;
+float temperature = -1000000.00;
 
 void setupSensors(void)
 {
@@ -31,13 +31,14 @@ void setupSensors(void)
 
 void setup(void)
 {
-  // start serial port
-  Serial.begin(9600);
+  SSRInit();
 
   // Start up the library
   sensors.begin();
   setupSensors();
-  SSRInit();
+  
+  // start serial port
+  Serial.begin(9600);
 }
 
 union{
