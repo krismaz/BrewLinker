@@ -3,10 +3,14 @@ import io
 from time import sleep, time
 from struct import pack
 from pymsgbox import *
+import json
 
 sio = None
 
 lasttarget = ''
+
+with open('settings.json', 'r') as settingsfile:
+    settings = json.load(settingsfile)
 
 
 def getTemperatures():
@@ -37,6 +41,7 @@ def setTarget(target):
 
 
 def setupSerial(port):
+    return
     print('a')
     global sio, ser
     try:
@@ -67,7 +72,7 @@ def evaluate(command, index):
         return
     op, *args = command.split(' ')
     if op == 'TARGET':
-        setTarget(' '.join(args))
+        print('TARGET command deprecated, use settings file.')
     if op == 'HEAT':
         setTemperature(float(args[0]))
         while True:
@@ -100,7 +105,8 @@ def evaluate(command, index):
 i = 1
 
 if __name__ == "__main__":
-    setupSerial('/dev/ttyACM1')
+    setupSerial(settings['COM'])
+    setTarget(settings['sensor'])
     while(True):
         evaluate(input().strip(), i)
         i += 1
