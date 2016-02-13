@@ -13,7 +13,11 @@ with open('settings.json', 'r') as settingsfile:
     settings = json.load(settingsfile)
 
 
-def getTemperatures():
+def name_sensors(raw):
+    return dict((settings['names'].get(k) or k, v) for k, v in raw.items())
+
+
+def get_temperatures():
     ser.write(bytes([1]))
     ser.flush()
     res = dict()
@@ -23,7 +27,7 @@ def getTemperatures():
     return res
 
 
-def setTemperature(temp):
+def set_temperatures(temp):
     bts = pack('f', temp)
     ser.write(bytes([2]))
     ser.write(bts)
@@ -31,7 +35,7 @@ def setTemperature(temp):
     print('Target set:', sio.readline())
 
 
-def setTarget(target):
+def set_target(target):
     global lasttarget
     lasttarget = target
     ser.write(bytes([3]))
@@ -40,7 +44,7 @@ def setTarget(target):
     print('Temp set:', sio.readline())
 
 
-def setupSerial(port):
+def setup_serial(port):
     return
     print('a')
     global sio, ser
@@ -74,10 +78,10 @@ def evaluate(command, index):
     if op == 'TARGET':
         print('TARGET command deprecated, use settings file.')
     if op == 'HEAT':
-        setTemperature(float(args[0]))
+        set_temperatures(float(args[0]))
         while True:
-            temps = getTemperatures()
-            print(index, '-', temps)
+            temps = get_temperatures()
+            print(index, '-', name_sensors(temps))
             try:
                 if temps[lasttarget] >= float(args[0]):
                     break
@@ -89,24 +93,24 @@ def evaluate(command, index):
             sleep(5)
     if op == 'COOK':
         start = time()
-        setTemperature(float(args[0]))
+        set_temperatures(float(args[0]))
         while True:
-            temps = getTemperatures()
-            print(index, '-', temps)
+            temps = get_temperatures()
+            print(index, '-', name_sensors(temps))
             if time() > start + float(args[1])*60.0:
                 break
             sleep(5)
     if op == 'PAUSE':
         alert(text=' '.join(args), title='', button='OK')
     if op == 'DONE':
-        setTemperature(-100000000.0)
-        setTarget('0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0')
+        set_temperatures(-100000000.0)
+        set_target('0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0')
 
 i = 1
 
 if __name__ == "__main__":
-    setupSerial(settings['COM'])
-    setTarget(settings['sensor'])
+    setup_serial(settings['COM'])
+    set_target(settings['sensor'])
     while(True):
         evaluate(input().strip(), i)
         i += 1
