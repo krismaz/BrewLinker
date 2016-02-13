@@ -4,6 +4,7 @@ from time import sleep, time
 from struct import pack
 from pymsgbox import *
 import json
+import datetime
 
 sio = None
 
@@ -97,8 +98,10 @@ def evaluate(command, index):
         while True:
             temps = get_temperatures()
             print(index, '-', name_sensors(temps))
-            if time() > start + float(args[1])*60.0:
+            remaining = start + float(args[1])*60.0 - time()
+            if remaining < 0:
                 break
+            print('Time remaining:', datetime.timedelta(seconds=remaining))
             sleep(5)
     if op == 'PAUSE':
         alert(text=' '.join(args), title='', button='OK')
