@@ -46,7 +46,6 @@ def set_target(target):
 
 
 def setup_serial(port):
-    return
     print('a')
     global sio, ser
     try:
