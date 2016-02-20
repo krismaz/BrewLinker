@@ -5,12 +5,18 @@ from struct import pack
 from pymsgbox import *
 import json
 import datetime
+import argparse
+
+parser = argparse.ArgumentParser(description='Brewing process runner.')
+parser.add_argument('-s', dest="settings", default="settings.json",
+                    help="Settings file")
+args = parser.parse_args()
 
 sio = None
 
 lasttarget = ''
 
-with open('settings.json', 'r') as settingsfile:
+with open(args.settings, 'r') as settingsfile:
     settings = json.load(settingsfile)
 
 
@@ -55,8 +61,8 @@ def setup_serial(port):
             timeout=3
         )
     except serial.serialutil.SerialException:
-        print('Error communicating with device "{}"! \n' +
-              'Have you provided the correct COM port?'.format(port))
+        print('Error communicating with device "{}"! \n'.format(port) +
+              'Have you provided the correct COM port?')
         exit(1)
     print('a')
     sio = io.TextIOWrapper(io.BufferedRWPair(ser, ser, buffer_size=1),
