@@ -93,9 +93,17 @@ void printTemps()
 
 void cycle()
 {
-  if(sensors.validAddress(target) && sensors.getTempC(target)<temperature)
+  
+  if(sensors.validAddress(target))
   {
-    SSROn();
+    float diff = temperature - sensors.getTempC(target);
+    if(diff > 0.0f)
+    {
+      //SSROn();
+      SSRPhase(diff);
+    } else {
+      SSROff(); 
+    }
   } else {
     SSROff(); 
   }
