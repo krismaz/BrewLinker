@@ -23,8 +23,16 @@ inline void SSROn()
   digitalWrite(SSR_PINc, HIGH);  
 }
 
+inline void SSROff()
+{
+  digitalWrite(SSR_PINa, LOW);
+  digitalWrite(SSR_PINb, LOW);
+  digitalWrite(SSR_PINc, LOW);
+}
+
 inline void SSRPhase(float diff)
 { 
+  SSROff();
   if(diff > 5.0f)
   {
     digitalWrite(SSR_PINa, HIGH);
@@ -38,13 +46,6 @@ inline void SSRPhase(float diff)
   } else {
     digitalWrite(SSR_PINb, HIGH);
   }
-}
-
-inline void SSROff()
-{
-  digitalWrite(SSR_PINa, LOW);
-  digitalWrite(SSR_PINb, LOW);
-  digitalWrite(SSR_PINc, LOW);
 }
 
 #endif
