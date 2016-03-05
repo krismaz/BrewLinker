@@ -33,8 +33,10 @@ inline void SSRPhase(float diff)
   } else if (diff > 2.0f){
     digitalWrite(SSR_PINb, HIGH);
     digitalWrite(SSR_PINc, HIGH);
-  } else {
+  } else if (diff > 1.0f){
     digitalWrite(SSR_PINc, HIGH);
+  } else {
+    digitalWrite(SSR_PINb, HIGH);
   }
 }
 
