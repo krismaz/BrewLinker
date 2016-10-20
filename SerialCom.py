@@ -62,8 +62,8 @@ def evaluate(command, index, coms):
 
 if __name__ == "__main__":
     i = 1
-    # coms = ArduinoCommunicator(settings['COM'], settings['sensor'])
-    coms = DebugCommunicator(settings['COM'], settings['sensor'])
+    coms = ArduinoCommunicator(settings['COM'], settings['sensor'])
+    # coms = DebugCommunicator(settings['COM'], settings['sensor'])
     while(True):
         evaluate(input().strip(), i, coms)
         i += 1
