@@ -65,7 +65,7 @@ def setup_serial(port):
               'Have you provided the correct COM port?')
         exit(1)
     print('a')
-    sio = io.TextIOWrapper(io.BufferedRWPair(ser, ser, buffer_size=1),
+    sio = io.TextIOWrapper(io.BufferedRWPair(ser, ser, 1),
                            encoding='ascii',
                            newline=None)
     sio._CHUNK_SIZE = 1
