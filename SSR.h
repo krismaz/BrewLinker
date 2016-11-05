@@ -48,4 +48,14 @@ inline void SSRPhase(float diff)
   }
 }
 
+inline void PumpOn()
+{
+  digitalWrite(PUMP_PIN, HIGH);
+}
+
+inline void PumpOff()
+{
+  digitalWrite(PUMP_PIN, LOW);
+}
+
 #endif

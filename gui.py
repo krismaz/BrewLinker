@@ -14,16 +14,20 @@ class Ui_MainWindow(object):
         MainWindow.resize(800, 600)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
-        self.pushButton = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton.setGeometry(QtCore.QRect(620, 470, 161, 81))
-        self.pushButton.setObjectName("pushButton")
         self.progressBar = QtWidgets.QProgressBar(self.centralwidget)
-        self.progressBar.setGeometry(QtCore.QRect(0, 530, 611, 23))
-        self.progressBar.setProperty("value", 24)
+        self.progressBar.setGeometry(QtCore.QRect(620, 10, 151, 431))
+        self.progressBar.setProperty("value", 0)
+        self.progressBar.setOrientation(QtCore.Qt.Vertical)
+        self.progressBar.setInvertedAppearance(False)
+        self.progressBar.setTextDirection(QtWidgets.QProgressBar.TopToBottom)
         self.progressBar.setObjectName("progressBar")
         self.textBrowser = QtWidgets.QTextBrowser(self.centralwidget)
         self.textBrowser.setGeometry(QtCore.QRect(0, 0, 591, 371))
         self.textBrowser.setObjectName("textBrowser")
+        self.checkBox = QtWidgets.QCheckBox(self.centralwidget)
+        self.checkBox.setEnabled(True)
+        self.checkBox.setGeometry(QtCore.QRect(620, 450, 54, 17))
+        self.checkBox.setObjectName("checkBox")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 21))
@@ -39,8 +43,8 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.pushButton.setText(_translate("MainWindow", "PushButton"))
         self.progressBar.setFormat(_translate("MainWindow", "%p"))
+        self.checkBox.setText(_translate("MainWindow", "Pumps"))
 
 
 if __name__ == "__main__":

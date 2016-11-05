@@ -123,6 +123,12 @@ void loop(void)
     case 3:
       setTarget();
     break;
+    case 4:
+      PumpOn();
+    break;
+    case 5:
+      PumpOff();
+    break;
     case -1:
        delay(500);
        break;

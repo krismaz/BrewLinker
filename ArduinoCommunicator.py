@@ -53,3 +53,11 @@ class ArduinoCommunicator:
             addr = self.sio.readline().strip()  # Right side evaluates first
             res[addr] = float(self.sio.readline())
         return res
+
+    def pump_on(self):
+        self.ser.write(bytes([4]))
+        self.ser.flush()
+
+    def pump_off(self):
+        self.ser.write(bytes([5]))
+        self.ser.flush()

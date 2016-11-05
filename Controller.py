@@ -9,6 +9,9 @@ class Controller:
     def __init__(self, settings, coms):
         self.settings = settings
         self.coms = coms
+        self.coms.pump_off()
+        self.pump = False
+        pub.subscribe(self.pump_toggle, 'PumpToggle')
         thread = threading.Thread(target=self.brew_loop)
         thread.start()
 
@@ -52,10 +55,22 @@ class Controller:
                 pub.sendMessage('MainTemp', arg1=temps[self.coms.sensor])
                 sleep(5)
         if op == 'PAUSE':
+            self.coms.set_temperature(-100000000.0)
             alert(text=' '.join(args), title='', button='OK')
         if op == 'DONE':
             self.coms.set_temperature(-100000000.0)
             self.coms.set_target('0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0')
+
+    def pump_toggle(self, newState):
+        if self.pump == newState:
+            return
+        if self.pump:
+            self.coms.pump_off()
+            self.pump = False
+        else:
+            self.coms.pump_on()
+            self.pump = True
+        pub.sendMessage('PumpStatus', arg1=self.pump)
 
     def brew_loop(self):
         i = 1
