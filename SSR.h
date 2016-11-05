@@ -5,6 +5,8 @@
 #define SSR_PINb 9
 #define SSR_PINc 10
 
+#define PUMP_PIN 11
+
 inline void SSRInit()
 {
   pinMode(SSR_PINa, OUTPUT);
