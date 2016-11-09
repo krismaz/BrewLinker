@@ -3,6 +3,7 @@ import datetime
 from pymsgbox import *
 import threading
 from pubsub import pub
+import Steps
 
 
 class Controller:
@@ -24,16 +25,17 @@ class Controller:
         print(command, '----')
         if command[0] == '#':
             return
-        op, *args = command.split(' ')
-        if op == 'TARGET':
+
+        op = Steps.parse(command)
+        if op.tag == 'TARGET':
             print('TARGET command deprecated, use settings file.')
-        if op == 'HEAT':
-            self.coms.set_temperature(float(args[0]))
+        if op.tag == 'HEAT':
+            self.coms.set_temperature(op.temp)
             while True:
                 temps = self.coms.get_temperatures()
                 print(index, '-', self.name_sensors(temps))
                 try:
-                    if temps[self.coms.sensor] >= float(args[0]):
+                    if temps[self.coms.sensor] >= op.temp:
                         break
                 except KeyError:
                     print('Unknown target sensor {}!'.format(self.coms.sensor))
@@ -42,22 +44,22 @@ class Controller:
                     exit(1)
                 pub.sendMessage('MainTemp', arg1=temps[self.coms.sensor])
                 sleep(5)
-        if op == 'COOK':
+        if op.tag == 'COOK':
             start = time()
-            coms.set_temperature(float(args[0]))
+            self.coms.set_temperature(op.temp)
             while True:
                 temps = self.coms.get_temperatures()
                 print(index, '-', self.name_sensors(temps))
-                remaining = start + float(args[1]) * 60.0 - time()
+                remaining = start + op.time - time()
                 if remaining < 0:
                     break
                 print('Time remaining:', datetime.timedelta(seconds=remaining))
                 pub.sendMessage('MainTemp', arg1=temps[self.coms.sensor])
                 sleep(5)
-        if op == 'PAUSE':
+        if op.tag == 'PAUSE':
             self.coms.set_temperature(-100000000.0)
-            alert(text=' '.join(args), title='', button='OK')
-        if op == 'DONE':
+            alert(text=op.msg, title='', button='OK')
+        if op.tag == 'DONE':
             self.coms.set_temperature(-100000000.0)
             self.coms.set_target('0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0')
 
