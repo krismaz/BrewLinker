@@ -26,8 +26,8 @@ if __name__ == "__main__":
     with open(args.settings, 'r') as settingsfile:
         settings = json.load(settingsfile)
 
-    # coms = ArduinoCommunicator(settings['COM'], settings['sensor'])
-    coms = DebugCommunicator(settings['COM'], settings['sensor'])
+    coms = ArduinoCommunicator(settings['COM'], settings['sensor'])
+    # coms = DebugCommunicator(settings['COM'], settings['sensor'])
 
     control = Controller(settings, coms)
 
