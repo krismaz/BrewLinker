@@ -61,7 +61,7 @@ class Controller:
             alert(text=op.msg, title='', button='OK')
         if op.tag == 'DONE':
             self.coms.set_temperature(-100000000.0)
-            self.coms.set_target('0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0')
+            self.coms.set_sensor('0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0')
 
     def pump_toggle(self, newState):
         if self.pump == newState:
