@@ -20,7 +20,7 @@ class DebugCommunicator:
         print('Temperature set:', temp)
 
     def get_temperatures(self):
-        return {self.sensor: time() - self.start}
+        return {self.sensor: time() - self.start + 70.}
 
     def pump_on(self):
         print('Pump on')

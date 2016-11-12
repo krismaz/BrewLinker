@@ -3,11 +3,11 @@ import datetime
 
 class Pause:
     def __init__(self, msg):
-        self.msg = msg
+        self.msg = msg.strip()
         self.tag = 'PAUSE'
 
     def __str__(self):
-        return 'Pause ({msg})'.format(**self)
+        return 'Pause ({msg})'.format(**self.__dict__)
 
 
 class Done:
@@ -15,7 +15,7 @@ class Done:
         self.tag = 'DONE'
 
     def __str__(self):
-        return 'Done!'.format(**self)
+        return 'Done!'.format(**self.__dict__)
 
 
 class Target:
@@ -23,7 +23,7 @@ class Target:
         self.tag = 'TARGET'
 
     def __str__(self):
-        return 'Use settings file for target'.format(**self)
+        return 'Use settings file for target'.format(**self.__dict__)
 
 
 class Heat:
@@ -32,7 +32,7 @@ class Heat:
         self.temp = temp
 
     def __str__(self):
-        return 'Heat to {tmp}°'.format(**self)
+        return 'Heat to {temp}°'.format(**self.__dict__)
 
 
 class Cook:
@@ -43,10 +43,12 @@ class Cook:
         self.timestring = datetime.timedelta(seconds=time)
 
     def __str__(self):
-        return 'Cook at {tmp}° for {timestring}'.format(**self)
+        return 'Cook at {temp}° for {timestring}'.format(**self.__dict__)
 
 
 def parse(command):
+    if not command or command[0] == '#':
+        return None
     op, *args = command.split(' ')
     if op == 'PAUSE':
         return Pause(' '.join(args))

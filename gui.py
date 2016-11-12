@@ -17,17 +17,18 @@ class Ui_MainWindow(object):
         self.progressBar = QtWidgets.QProgressBar(self.centralwidget)
         self.progressBar.setGeometry(QtCore.QRect(620, 10, 151, 431))
         self.progressBar.setProperty("value", 0)
+        self.progressBar.setTextVisible(True)
         self.progressBar.setOrientation(QtCore.Qt.Vertical)
         self.progressBar.setInvertedAppearance(False)
         self.progressBar.setTextDirection(QtWidgets.QProgressBar.TopToBottom)
         self.progressBar.setObjectName("progressBar")
-        self.textBrowser = QtWidgets.QTextBrowser(self.centralwidget)
-        self.textBrowser.setGeometry(QtCore.QRect(0, 0, 591, 371))
-        self.textBrowser.setObjectName("textBrowser")
         self.checkBox = QtWidgets.QCheckBox(self.centralwidget)
         self.checkBox.setEnabled(True)
         self.checkBox.setGeometry(QtCore.QRect(620, 450, 54, 17))
         self.checkBox.setObjectName("checkBox")
+        self.label = QtWidgets.QLabel(self.centralwidget)
+        self.label.setGeometry(QtCore.QRect(0, 0, 291, 261))
+        self.label.setObjectName("label")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 21))
@@ -45,14 +46,5 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.progressBar.setFormat(_translate("MainWindow", "%p"))
         self.checkBox.setText(_translate("MainWindow", "Pumps"))
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
-    sys.exit(app.exec_())
+        self.label.setText(_translate("MainWindow", "TextLabel"))
 

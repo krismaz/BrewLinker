@@ -1,32 +1,29 @@
 from time import sleep, time
 import datetime
 from pymsgbox import *
-import threading
-from pubsub import pub
 import Steps
+from PyQt5.QtCore import QThread, pyqtSignal
 
 
-class Controller:
-    def __init__(self, settings, coms):
+class Controller(QThread):
+    program_changed = pyqtSignal([object])
+    temp_changed = pyqtSignal(float)
+    pump_changed = pyqtSignal(bool)
+
+    def __init__(self, settings, coms, script, parent=None):
+        QThread.__init__(self, parent)
         self.settings = settings
         self.coms = coms
         self.coms.pump_off()
         self.pump = False
-        pub.subscribe(self.pump_toggle, 'PumpToggle')
-        thread = threading.Thread(target=self.brew_loop)
-        thread.start()
+        self.program = [step for step in map(Steps.parse, script) if step]
+        self.current_step = None
 
     def name_sensors(self, raw):
         return dict((self.settings['names'].get(k) or k, v) for k, v in raw.items())
 
-    def evaluate(self, command, index):
-        if not command:
-            return
-        print(command, '----')
-        if command[0] == '#':
-            return
-
-        op = Steps.parse(command)
+    def evaluate(self, op, index):
+        self.program_changed.emit(self.program)
         if op.tag == 'TARGET':
             print('TARGET command deprecated, use settings file.')
         if op.tag == 'HEAT':
@@ -42,7 +39,7 @@ class Controller:
                     print('Connected sensors are:')
                     print('\n'.join(*temps.keys()))
                     exit(1)
-                pub.sendMessage('MainTemp', arg1=temps[self.coms.sensor])
+                self.temp_changed.emit(temps[self.coms.sensor])
                 sleep(5)
         if op.tag == 'COOK':
             start = time()
@@ -54,7 +51,7 @@ class Controller:
                 if remaining < 0:
                     break
                 print('Time remaining:', datetime.timedelta(seconds=remaining))
-                pub.sendMessage('MainTemp', arg1=temps[self.coms.sensor])
+                self.temp_changed.emit(temps[self.coms.sensor])
                 sleep(5)
         if op.tag == 'PAUSE':
             self.coms.set_temperature(-100000000.0)
@@ -72,10 +69,12 @@ class Controller:
         else:
             self.coms.pump_on()
             self.pump = True
-        pub.sendMessage('PumpStatus', arg1=self.pump)
+        self.pump_changed.emit(self.pump)
 
     def brew_loop(self):
-        i = 1
-        while(True):
-            self.evaluate(input().strip(), i)
-            i += 1
+        for i, step in enumerate(self.program):
+            self.current_step = step
+            self.evaluate(step, i)
+
+    def run(self):
+        self.brew_loop()
