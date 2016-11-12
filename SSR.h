@@ -35,19 +35,23 @@ inline void SSROff()
 inline void SSRPhase(float diff)
 { 
   SSROff();
-  if(diff > 5.0f)
+  if(diff > 4.5f)
   {
     digitalWrite(SSR_PINa, HIGH);
     digitalWrite(SSR_PINb, HIGH);
     digitalWrite(SSR_PINc, HIGH); 
-  } else if (diff > 2.0f){
+  } else if (diff > 3.0f){
     digitalWrite(SSR_PINb, HIGH);
     digitalWrite(SSR_PINc, HIGH);
-  } else if (diff > 1.0f){
+  } else if (diff > 1.5f){
+    digitalWrite(SSR_PINa, HIGH);
+    digitalWrite(SSR_PINb, HIGH);
+  } else if (diff > 0.5f){
     digitalWrite(SSR_PINc, HIGH);
   } else {
     digitalWrite(SSR_PINb, HIGH);
   }
+}
 }
 
 inline void PumpOn()
