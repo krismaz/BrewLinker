@@ -19,6 +19,10 @@ def update_list(arg1):
     text = '\n'.join(('> ' if step == control.current_step else '   ') + str(step) for step in arg1)
     ui.label.setText(text)
 
+def update_sensors(arg1):
+    text = '\n'.join('{}: {}'.format(k,v) for k,v in arg1.items())
+    ui.label_2.setText(text)
+
 
 if __name__ == "__main__":
     global ui
@@ -49,10 +53,14 @@ if __name__ == "__main__":
     control.pump_changed.connect(update_pump)
     control.temp_changed.connect(update_temp)
     control.program_changed.connect(update_list)
+    control.sensors_changed.connect(update_sensors)
+
     ui.checkBox.stateChanged.connect(lambda x: control.pump_toggle(bool(x)))
 
-    ui.upButton.clicked.connect(lambda x: control.shift_temp(1))
-    ui.downButton.clicked.connect(lambda x: control.shift_temp(-1))
+    ui.upButton.clicked.connect(lambda x: control.shift_temp(0.5))
+    ui.downButton.clicked.connect(lambda x: control.shift_temp(-0.5))
+    ui.pauseButton.clicked.connect(lambda x: control.request_pause())
+
 
 
     control.start()
