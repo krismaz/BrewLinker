@@ -74,27 +74,27 @@
    <widget class="QPushButton" name="upButton">
     <property name="geometry">
      <rect>
-      <x>700</x>
+      <x>729</x>
       <y>450</y>
-      <width>80</width>
+      <width>51</width>
       <height>22</height>
      </rect>
     </property>
     <property name="text">
-     <string>^</string>
+     <string>↑🌡</string>
     </property>
    </widget>
    <widget class="QPushButton" name="downButton">
     <property name="geometry">
      <rect>
-      <x>700</x>
+      <x>729</x>
       <y>470</y>
-      <width>80</width>
+      <width>51</width>
       <height>22</height>
      </rect>
     </property>
     <property name="text">
-     <string>v</string>
+     <string>↓🌡</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pauseButton">
@@ -120,7 +120,33 @@
      </rect>
     </property>
     <property name="text">
-     <string> </string>
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="timeUpButton">
+    <property name="geometry">
+     <rect>
+      <x>680</x>
+      <y>450</y>
+      <width>51</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>↑🕐</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="timeDownButton">
+    <property name="geometry">
+     <rect>
+      <x>680</x>
+      <y>470</y>
+      <width>51</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>↓🕐</string>
     </property>
    </widget>
   </widget>
@@ -130,7 +156,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>19</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>

@@ -40,9 +40,9 @@ class Cook:
         self.tag = 'COOK'
         self.temp = temp
         self.time = time
-        self.timestring = datetime.timedelta(seconds=time)
 
     def __str__(self):
+        self.timestring = datetime.timedelta(seconds=self.time)
         return 'Cook at {temp}° for {timestring}'.format(**self.__dict__)
 
 

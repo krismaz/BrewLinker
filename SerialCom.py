@@ -39,7 +39,7 @@ if __name__ == "__main__":
         script = sriptFile.readlines()
 
     coms = ArduinoCommunicator(settings['COM'], settings['sensor'])
-    # coms = DebugCommunicator(settings['COM'], settings['sensor'])
+    #coms = DebugCommunicator(settings['COM'], settings['sensor'])
 
     app = QtWidgets.QApplication(sys.argv)
     app.setStyle(QtWidgets.QStyleFactory.create('Fusion'))
@@ -59,6 +59,8 @@ if __name__ == "__main__":
 
     ui.upButton.clicked.connect(lambda x: control.shift_temp(0.5))
     ui.downButton.clicked.connect(lambda x: control.shift_temp(-0.5))
+    ui.timeUpButton.clicked.connect(lambda x: control.shift_time(30))
+    ui.timeDownButton.clicked.connect(lambda x: control.shift_time(-30))
     ui.pauseButton.clicked.connect(lambda x: control.request_pause())
 
 

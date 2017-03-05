@@ -64,10 +64,12 @@ class Controller(QThread):
                 print('Time remaining:', datetime.timedelta(seconds=remaining))
                 self.temp_changed.emit(temps[self.coms.sensor])
                 if self.to_pause:
+                    pauseStart = time()
                     self.coms.set_temperature(-100000000.0)
                     alert(text='PAUSE', title='', button='OK')
                     self.to_pause = False
                     self.coms.set_temperature(op.temp)
+                    start += time() - pauseStart
                 sleep(5)
         if op.tag == 'PAUSE':
             self.coms.set_temperature(-100000000.0)
@@ -92,6 +94,13 @@ class Controller(QThread):
             self.current_step.temp += diff
             if not self.to_pause:
                 self.coms.set_temperature(self.current_step.temp)
+            self.program_changed.emit(self.program)
+        except Exception as e:
+            print(e)
+
+    def shift_time(self, diff):
+        try:
+            self.current_step.time += diff
             self.program_changed.emit(self.program)
         except Exception as e:
             print(e)
