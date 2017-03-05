@@ -9,6 +9,7 @@ import sys
 
 def update_temp(arg1):
     ui.progressBar.setProperty('value', arg1)
+    ui.label_3.setText('{:.1f}°'.format(arg1))
 
 
 def update_pump(arg1):
@@ -20,7 +21,7 @@ def update_list(arg1):
     ui.label.setText(text)
 
 def update_sensors(arg1):
-    text = '\n'.join('{}: {}'.format(k,v) for k,v in arg1.items())
+    text = '\n'.join('{}: {:.1f}°'.format(k,v) for k,v in arg1.items())
     ui.label_2.setText(text)
 
 
@@ -39,7 +40,7 @@ if __name__ == "__main__":
         script = sriptFile.readlines()
 
     coms = ArduinoCommunicator(settings['COM'], settings['sensor'])
-    #coms = DebugCommunicator(settings['COM'], settings['sensor'])
+    # coms = DebugCommunicator(settings['COM'], settings['sensor'])
 
     app = QtWidgets.QApplication(sys.argv)
     app.setStyle(QtWidgets.QStyleFactory.create('Fusion'))
