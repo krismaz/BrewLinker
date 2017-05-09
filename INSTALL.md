@@ -6,7 +6,7 @@ sudo apt-get install python3 python3-pip python3-tk
 
 pip3 install -r requirements.txt
 
-Additionally, you will need an arduino compiler/IDE to compile and upload the Arduino code. I personally use the standard Arduino IDE, but your setup may wary.
+Additionally, you will need an arduino compiler/IDE to compile and upload the Arduino code. I personally use the standard Arduino IDE, but your setup may vary.
 It can be installed using the following command:
 
 sudo apt-get install arduino
