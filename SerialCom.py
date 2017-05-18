@@ -3,26 +3,28 @@ import argparse
 from ArduinoCommunicator import ArduinoCommunicator
 from DebugCommunicator import DebugCommunicator
 import gui
-from PyQt5 import QtWidgets, QtWidgets
+from PyQt5 import QtWidgets
 from Controller import Controller
 import sys
 
+
 def update_temp(arg1):
-    ui.progressBar.setProperty('value', arg1)
-    ui.label_3.setText('{:.1f}°'.format(arg1))
+    ui.ProgressBar.setProperty('value', arg1)
+    ui.MainTempLabel.setText('{:.1f}°'.format(arg1))
 
 
 def update_pump(arg1):
-    ui.checkBox.setProperty('checked', arg1)
+    ui.PumpCheckBox.setProperty('checked', arg1)
 
 
 def update_list(arg1):
     text = '\n'.join(('> ' if step == control.current_step else '   ') + str(step) for step in arg1)
-    ui.label.setText(text)
+    ui.StepLabel.setText(text)
+
 
 def update_sensors(arg1):
     text = '\n'.join('{}: {:.1f}°'.format(k,v) for k,v in arg1.items())
-    ui.label_2.setText(text)
+    ui.SensorLabel.setText(text)
 
 
 if __name__ == "__main__":
@@ -40,7 +42,7 @@ if __name__ == "__main__":
         script = sriptFile.readlines()
 
     coms = ArduinoCommunicator(settings['COM'], settings['sensor'])
-    # coms = DebugCommunicator(settings['COM'], settings['sensor'])
+    #coms = DebugCommunicator(settings['COM'], settings['sensor'])
 
     app = QtWidgets.QApplication(sys.argv)
     app.setStyle(QtWidgets.QStyleFactory.create('Fusion'))
@@ -56,15 +58,13 @@ if __name__ == "__main__":
     control.program_changed.connect(update_list)
     control.sensors_changed.connect(update_sensors)
 
-    ui.checkBox.stateChanged.connect(lambda x: control.pump_toggle(bool(x)))
+    ui.PumpCheckBox.stateChanged.connect(lambda x: control.pump_toggle(bool(x)))
 
-    ui.upButton.clicked.connect(lambda x: control.shift_temp(0.5))
-    ui.downButton.clicked.connect(lambda x: control.shift_temp(-0.5))
-    ui.timeUpButton.clicked.connect(lambda x: control.shift_time(30))
-    ui.timeDownButton.clicked.connect(lambda x: control.shift_time(-30))
-    ui.pauseButton.clicked.connect(lambda x: control.request_pause())
-
-
+    ui.TempUpButton.clicked.connect(lambda x: control.shift_temp(0.5))
+    ui.TempDownButton.clicked.connect(lambda x: control.shift_temp(-0.5))
+    ui.TimeUpButton.clicked.connect(lambda x: control.shift_time(30))
+    ui.TimeDownButton.clicked.connect(lambda x: control.shift_time(-30))
+    ui.PauseButton.clicked.connect(lambda x: control.request_pause())
 
     control.start()
 
