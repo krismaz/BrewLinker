@@ -54,21 +54,21 @@ inline void SSRPhase(float diff)
     digitalWrite(SSR_PINa, HIGH);
     digitalWrite(SSR_PINb, HIGH);
     digitalWrite(SSR_PINc, HIGH); 
-    digitalWrite(LED_PINa, LOW);
+    digitalWrite(LED_PINa, HIGH);
   } else if (diff > 3.0f){
     digitalWrite(SSR_PINb, HIGH);
     digitalWrite(SSR_PINc, HIGH);
-    digitalWrite(LED_PINb, LOW);
+    digitalWrite(LED_PINb, HIGH);
   } else if (diff > 1.5f){
     digitalWrite(SSR_PINa, HIGH);
     digitalWrite(SSR_PINb, HIGH);
-    digitalWrite(LED_PINc, LOW);
+    digitalWrite(LED_PINc, HIGH);
   } else if (diff > 0.5f){
     digitalWrite(SSR_PINc, HIGH);
-    digitalWrite(LED_PINd, LOW);
+    digitalWrite(LED_PINd, HIGH);
   } else {
     digitalWrite(SSR_PINb, HIGH);
-    digitalWrite(LED_PINe, LOW);
+    digitalWrite(LED_PINe, HIGH);
   }
 }
 }
