@@ -96,7 +96,12 @@ void cycle()
   
   if(sensors.validAddress(target))
   {
-    float diff = temperature - sensors.getTempC(target);
+    float reading = sensors.getTempC(target);
+    if(reading < 0.0f)
+    {
+      return;
+    }
+    float diff = temperature - reading;
     if(diff > 0.0f)
     {
       //SSROn();
