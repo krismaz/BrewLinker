@@ -55,7 +55,6 @@ inline void SSROff()
   digitalWrite(LED_PINc, LOW);
   digitalWrite(LED_PINd, LOW);
   digitalWrite(LED_PINe, LOW);
-
 }
 
 inline void SSRPhase(float diff)
@@ -82,7 +81,6 @@ inline void SSRPhase(float diff)
     digitalWrite(SSR_PINb, HIGH);
     digitalWrite(LED_PINe, HIGH);
   }
-}
 }
 
 inline void PumpOn()
