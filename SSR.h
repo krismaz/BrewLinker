@@ -20,6 +20,12 @@ inline void SSRInit()
   pinMode(SSR_PINb, OUTPUT);
   pinMode(SSR_PINc, OUTPUT);
 
+  pinMode(LED_PINa, OUTPUT);
+  pinMode(LED_PINb, OUTPUT);
+  pinMode(LED_PINc, OUTPUT);
+  pinMode(LED_PINd, OUTPUT);
+  pinMode(LED_PINe, OUTPUT);
+
   digitalWrite(SSR_PINa, LOW);
   digitalWrite(SSR_PINb, LOW);
   digitalWrite(SSR_PINc, LOW);
@@ -30,6 +36,12 @@ inline void SSROn()
   digitalWrite(SSR_PINa, HIGH);
   digitalWrite(SSR_PINb, HIGH);
   digitalWrite(SSR_PINc, HIGH);  
+
+  digitalWrite(LED_PINa, HIGH);
+  digitalWrite(LED_PINb, HIGH);
+  digitalWrite(LED_PINc, HIGH);
+  digitalWrite(LED_PINd, HIGH);
+  digitalWrite(LED_PINe, HIGH);
 }
 
 inline void SSROff()
