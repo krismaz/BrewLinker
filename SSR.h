@@ -1,9 +1,9 @@
 #ifndef SSR_h
 #define SSR_h
 
-#define SSR_PINa 8
-#define SSR_PINb 9
-#define SSR_PINc 10
+#define SSR_PINa 49
+#define SSR_PINb 51
+#define SSR_PINc 53
 
 #define LED_PINa 22
 #define LED_PINb 24
@@ -55,22 +55,23 @@ inline void SSROff()
   digitalWrite(LED_PINc, LOW);
   digitalWrite(LED_PINd, LOW);
   digitalWrite(LED_PINe, LOW);
+
 }
 
 inline void SSRPhase(float diff)
 { 
   SSROff();
-  if(diff > 4.5f)
+  if(diff > 2.0f)
   {
     digitalWrite(SSR_PINa, HIGH);
     digitalWrite(SSR_PINb, HIGH);
     digitalWrite(SSR_PINc, HIGH); 
     digitalWrite(LED_PINa, HIGH);
-  } else if (diff > 3.0f){
+  } else if (diff > 1.5f){
     digitalWrite(SSR_PINb, HIGH);
     digitalWrite(SSR_PINc, HIGH);
     digitalWrite(LED_PINb, HIGH);
-  } else if (diff > 1.5f){
+  } else if (diff > 1.0f){
     digitalWrite(SSR_PINa, HIGH);
     digitalWrite(SSR_PINb, HIGH);
     digitalWrite(LED_PINc, HIGH);
@@ -82,6 +83,7 @@ inline void SSRPhase(float diff)
     digitalWrite(LED_PINe, HIGH);
   }
 }
+
 
 inline void PumpOn()
 {
