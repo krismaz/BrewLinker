@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'gui.ui'
 #
-# Created by: PyQt5 UI code generator 5.7
+# Created by: PyQt5 UI code generator 5.10.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -109,30 +109,30 @@ class Ui_MainWindow(object):
         self.MainTempLabel.setFont(font)
         self.MainTempLabel.setAlignment(QtCore.Qt.AlignCenter)
         self.MainTempLabel.setObjectName("MainTempLabel")
-        self.TempDownButton_2 = QtWidgets.QPushButton(self.centralwidget)
-        self.TempDownButton_2.setGeometry(QtCore.QRect(810, 640, 81, 31))
+        self.StepUpButton = QtWidgets.QPushButton(self.centralwidget)
+        self.StepUpButton.setGeometry(QtCore.QRect(810, 640, 81, 31))
         font = QtGui.QFont()
         font.setPointSize(10)
         font.setBold(False)
         font.setItalic(True)
         font.setWeight(50)
-        self.TempDownButton_2.setFont(font)
-        self.TempDownButton_2.setObjectName("TempDownButton_2")
-        self.TempDownButton_3 = QtWidgets.QPushButton(self.centralwidget)
-        self.TempDownButton_3.setGeometry(QtCore.QRect(930, 640, 81, 31))
+        self.StepUpButton.setFont(font)
+        self.StepUpButton.setObjectName("StepUpButton")
+        self.StepDownButton = QtWidgets.QPushButton(self.centralwidget)
+        self.StepDownButton.setGeometry(QtCore.QRect(930, 640, 81, 31))
         font = QtGui.QFont()
         font.setPointSize(10)
         font.setBold(False)
         font.setItalic(True)
         font.setWeight(50)
-        self.TempDownButton_3.setFont(font)
-        self.TempDownButton_3.setObjectName("TempDownButton_3")
+        self.StepDownButton.setFont(font)
+        self.StepDownButton.setObjectName("StepDownButton")
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1300, 19))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1300, 21))
         self.menubar.setObjectName("menubar")
         MainWindow.setMenuBar(self.menubar)
 
@@ -151,6 +151,6 @@ class Ui_MainWindow(object):
         self.TimeUpButton.setText(_translate("MainWindow", "↑ time up"))
         self.TimeDownButton.setText(_translate("MainWindow", "↓time down"))
         self.MainTempLabel.setText(_translate("MainWindow", "TextLabel"))
-        self.TempDownButton_2.setText(_translate("MainWindow", "step frem"))
-        self.TempDownButton_3.setText(_translate("MainWindow", "step tilbage"))
+        self.StepUpButton.setText(_translate("MainWindow", "step forward"))
+        self.StepDownButton.setText(_translate("MainWindow", "step back"))
 

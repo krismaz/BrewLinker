@@ -243,7 +243,7 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QPushButton" name="TempDownButton_2">
+   <widget class="QPushButton" name="StepUpButton">
     <property name="geometry">
      <rect>
       <x>810</x>
@@ -261,10 +261,10 @@
      </font>
     </property>
     <property name="text">
-     <string>step frem</string>
+     <string>step forward</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="TempDownButton_3">
+   <widget class="QPushButton" name="StepDownButton">
     <property name="geometry">
      <rect>
       <x>930</x>
@@ -282,7 +282,7 @@
      </font>
     </property>
     <property name="text">
-     <string>step tilbage</string>
+     <string>step back</string>
     </property>
    </widget>
   </widget>
@@ -293,7 +293,7 @@
      <x>0</x>
      <y>0</y>
      <width>1300</width>
-     <height>19</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>

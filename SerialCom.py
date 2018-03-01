@@ -64,6 +64,8 @@ if __name__ == "__main__":
     ui.TempDownButton.clicked.connect(lambda x: control.shift_temp(-0.5))
     ui.TimeUpButton.clicked.connect(lambda x: control.shift_time(30))
     ui.TimeDownButton.clicked.connect(lambda x: control.shift_time(-30))
+    ui.StepUpButton.clicked.connect(lambda x: control.shift_step(1))
+    ui.StepDownButton.clicked.connect(lambda x: control.shift_step(-1))
     ui.PauseButton.clicked.connect(lambda x: control.request_pause())
 
     control.start()

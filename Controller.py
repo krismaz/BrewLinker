@@ -21,6 +21,8 @@ class Controller(QThread):
         self.program = [step for step in map(Steps.parse, script) if step]
         self.current_step = None
         self.to_pause = False
+        self.to_break = False
+        self.next_step = 0
 
     def name_sensors(self, raw):
         return dict((self.settings['names'].get(k) or k, v) for k, v in raw.items())
@@ -32,7 +34,7 @@ class Controller(QThread):
             print('TARGET command deprecated, use settings file.')
         if op.tag == 'HEAT':
             self.coms.set_temperature(op.temp)
-            while True:
+            while not self.to_break:
                 temps = self.coms.get_temperatures()
                 self.sensors_changed.emit(self.name_sensors(temps))
                 print(index, '-', self.name_sensors(temps))
@@ -54,7 +56,7 @@ class Controller(QThread):
         if op.tag == 'COOK':
             start = time()
             self.coms.set_temperature(op.temp)
-            while True:
+            while not self.to_break:
                 temps = self.coms.get_temperatures()
                 self.sensors_changed.emit(self.name_sensors(temps))
                 print(index, '-', self.name_sensors(temps))
@@ -105,13 +107,21 @@ class Controller(QThread):
         except Exception as e:
             print(e)
 
+    def shift_step(self, diff):
+        self.next_step = max(0, self.next_step + diff)
+        self.to_break = True
+
+
+
     def request_pause(self):
         self.to_pause = True
 
     def brew_loop(self):
-        for i, step in enumerate(self.program):
-            self.current_step = step
-            self.evaluate(step, i)
+        while self.next_step < len(self.program):
+            self.current_step = self.program[self.next_step]
+            self.next_step += 1
+            self.to_break = False
+            self.evaluate(self.current_step, self.next_step-1)
 
     def run(self):
         self.brew_loop()
