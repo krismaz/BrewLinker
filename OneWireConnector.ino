@@ -22,11 +22,7 @@ void setupSensors(void)
     addresses[i] = (uint8_t*)malloc(sizeof(DeviceAddress));
     sensors.getAddress(addresses[i], i);
   }
-  for(uint8_t j = 0; j < nAddresses; j++)
-  {
-    target[j] = 0x00;
-  }
-
+  sensors.setResolution(9);
 }
 
 void setup(void)
