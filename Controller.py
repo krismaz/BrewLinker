@@ -108,6 +108,8 @@ class Controller(QThread):
             print(e)
 
     def shift_step(self, diff):
+        if not self.to_break:
+            diff -= 1
         self.next_step = max(0, self.next_step + diff)
         self.to_break = True
 
