@@ -41,8 +41,8 @@ if __name__ == "__main__":
     with open(args.script, 'r') as sriptFile:
         script = sriptFile.readlines()
 
-    #coms = ArduinoCommunicator(settings['COM'], settings['sensor'])
-    coms = DebugCommunicator(settings['COM'], settings['sensor'])
+    coms = ArduinoCommunicator(settings['COM'], settings['sensor'])
+    #coms = DebugCommunicator(settings['COM'], settings['sensor'])
 
     app = QtWidgets.QApplication(sys.argv)
     app.setStyle(QtWidgets.QStyleFactory.create('Fusion'))
