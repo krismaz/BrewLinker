@@ -6,6 +6,7 @@ import gui
 from PyQt5 import QtWidgets
 from Controller import Controller
 import sys
+import traceback
 
 
 def update_temp(arg1):
@@ -28,47 +29,54 @@ def update_sensors(arg1):
 
 
 if __name__ == "__main__":
-    global ui
-    parser = argparse.ArgumentParser(description='Brewing process runner.')
-    parser.add_argument('-s', dest="settings", default="settings.json",
-                        help="Settings file")
-    parser.add_argument('script', type=str, help='script file')
-    args = parser.parse_args()
+    try:
+        global ui
+        parser = argparse.ArgumentParser(description='Brewing process runner.')
+        parser.add_argument('-s', dest="settings", default="settings.json",
+                            help="Settings file")
+        parser.add_argument('script', type=str, help='script file')
+        args = parser.parse_args()
 
-    with open(args.settings, 'r') as settingsfile:
-        settings = json.load(settingsfile)
+        with open(args.settings, 'r') as settingsfile:
+            settings = json.load(settingsfile)
 
-    with open(args.script, 'r') as sriptFile:
-        script = sriptFile.readlines()
+        with open(args.script, 'r') as sriptFile:
+            script = sriptFile.readlines()
 
-    coms = ArduinoCommunicator(settings['COM'], settings['sensor'])
-    #coms = DebugCommunicator(settings['COM'], settings['sensor'])
+        #coms = ArduinoCommunicator(settings['COM'], settings['sensor'])
+        coms = DebugCommunicator(settings['COM'], settings['sensor'])
 
-    app = QtWidgets.QApplication(sys.argv)
-    app.setStyle(QtWidgets.QStyleFactory.create('Fusion'))
-    MainWindow = QtWidgets.QMainWindow()
-    ui = gui.Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    control = Controller(settings, coms, script, MainWindow)
+        app = QtWidgets.QApplication(sys.argv)
+        app.setStyle(QtWidgets.QStyleFactory.create('Fusion'))
+        MainWindow = QtWidgets.QMainWindow()
+        ui = gui.Ui_MainWindow()
+        ui.setupUi(MainWindow)
+        control = Controller(settings, coms, script, MainWindow)
 
-    update_list(control.program)
+        update_list(control.program)
 
-    control.pump_changed.connect(update_pump)
-    control.temp_changed.connect(update_temp)
-    control.program_changed.connect(update_list)
-    control.sensors_changed.connect(update_sensors)
+        control.pump_changed.connect(update_pump)
+        control.temp_changed.connect(update_temp)
+        control.program_changed.connect(update_list)
+        control.sensors_changed.connect(update_sensors)
 
-    ui.PumpCheckBox.stateChanged.connect(lambda x: control.pump_toggle(bool(x)))
+        ui.PumpCheckBox.stateChanged.connect(lambda x: control.pump_toggle(bool(x)))
 
-    ui.TempUpButton.clicked.connect(lambda x: control.shift_temp(0.5))
-    ui.TempDownButton.clicked.connect(lambda x: control.shift_temp(-0.5))
-    ui.TimeUpButton.clicked.connect(lambda x: control.shift_time(30))
-    ui.TimeDownButton.clicked.connect(lambda x: control.shift_time(-30))
-    ui.StepUpButton.clicked.connect(lambda x: control.shift_step(1))
-    ui.StepDownButton.clicked.connect(lambda x: control.shift_step(-1))
-    ui.PauseButton.clicked.connect(lambda x: control.request_pause())
+        ui.TempUpButton.clicked.connect(lambda x: control.shift_temp(0.5))
+        ui.TempDownButton.clicked.connect(lambda x: control.shift_temp(-0.5))
+        ui.TimeUpButton.clicked.connect(lambda x: control.shift_time(30))
+        ui.TimeDownButton.clicked.connect(lambda x: control.shift_time(-30))
+        ui.StepUpButton.clicked.connect(lambda x: control.shift_step(1))
+        ui.StepDownButton.clicked.connect(lambda x: control.shift_step(-1))
+        ui.PauseButton.clicked.connect(lambda x: control.request_pause())
 
-    control.start()
+        control.start()
 
-    MainWindow.show()
-    sys.exit(app.exec_())
+        MainWindow.show()
+        sys.exit(app.exec_())
+    except Exception as e:
+        traceback.print_exc()
+        print('Error written to crash.log', file=sys.stderr)
+        with open('crash.log', 'w') as crashlog:
+            traceback.print_exc(file=crashlog)
+
