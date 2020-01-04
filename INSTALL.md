@@ -4,6 +4,8 @@ sudo apt-get update
 
 sudo apt-get install python3 python3-pip python3-tk
 
+Install qt5
+
 pip3 install -r requirements.txt
 
 Additionally, you will need an arduino compiler/IDE to compile and upload the Arduino code. I personally use the standard Arduino IDE, but your setup may vary.
